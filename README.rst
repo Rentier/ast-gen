@@ -2,7 +2,7 @@
 ast-gen 
 ===============
 
-This is a small module to generate AST node classes automatically for Python. It originated in the `pyparser git`_ project. It was forked and then extracted from thre to wrap it into a self-contained module and to enhance it with additional features.
+This is a small module to generate AST node classes automatically for Python. It originated in the `pycparser`_ project. It was forked and then extracted from thre to wrap it into a self-contained module and to enhance it with additional features.
 
 Installation
 ------------
@@ -23,7 +23,11 @@ The idea behind this module is to describe the nodes, their attributes and child
 Config
 ^^^^^^
 
-Each entry is a Node sub-class name, listing the attributes and child nodes of the class: ::
+Each entry is a Node sub-class name, listing the attributes and child nodes of the class. Each line contains the name of the class, followed by it attributes: ::
+
+	<Name>: [list, of, attributes]
+
+The attributes can be of the following kind: ::
 
 	<name>*     - a child node
 	<name>**    - a sequence of child nodes
@@ -49,4 +53,4 @@ Build status
 
 .. image:: https://travis-ci.org/Rentier/ast-gen.png?branch=master   :target: https://travis-ci.org/Rentier/ast-gen
 
-.. _pyparser git: https://github.com/eliben/pycparser
+.. _pycparser: https://github.com/eliben/pycparser
