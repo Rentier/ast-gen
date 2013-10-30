@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     # metadata
-    name='ast-gen',
+    name='astgen',
     description='AST generator for Python',
     long_description="""
     Given a config file describing AST nodes
