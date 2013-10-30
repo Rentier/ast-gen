@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     # metadata
-    name='astgen',
+    name='ast-gen',
     description='AST generator for Python',
     long_description="""
     Given a config file describing AST nodes
@@ -21,7 +21,7 @@ setup(
     classifiers = [
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',],
-    packages=['ast-gen'],
+    packages=['astgen'],
     package_data={},
 )
 
