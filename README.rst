@@ -7,9 +7,9 @@ This is a small module to generate AST node classes automatically for Python. It
 Installation
 ------------
 
-Installing ast-gen is very simple. Once you download and unzip the package, you just have to execute the standard 
+Installing ast-gen is very simple. Once you download and unzip the package, you just have to execute the standard ::
 
-python setup.py install. 
+	python setup.py install. 
 
 The setup script will then place the ast-gen module into site-packages in your Python's installation library. To install it via **pip**, just use::
 
@@ -18,10 +18,12 @@ The setup script will then place the ast-gen module into site-packages in your P
 Usage
 -----
 
+The idea behind this module is to describe the nodes, their attributes and children in a config file. From it, a python file containing one class for every node is generated and then can be used without any dependency to this project.
+
 Config
 ^^^^^^
 
-Each entry is a Node sub-class name, listing the attributes and child nodes of the class:
+Each entry is a Node sub-class name, listing the attributes and child nodes of the class: ::
 
 	<name>*     - a child node
 	<name>**    - a sequence of child nodes
