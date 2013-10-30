@@ -4,26 +4,25 @@ from distutils.core import setup
 
 setup(
     # metadata
-    name='pycparser',
-    description='C parser in Python',
+    name='ast-gen',
+    description='AST generator for Python',
     long_description="""
-        pycparser is a complete parser of the C language, written in
-        pure Python using the PLY parsing library.
-        It parses C code into an AST and can serve as a front-end for
-        C compilers or analysis tools.
+    Given a config file describing AST nodes
+    and their respective attributes or children,
+    it creates a file containing these node classes.
     """,
     license='BSD',
-    version='2.10',
-    author='Eli Bendersky',
-    maintainer='Eli Bendersky',
-    author_email='eliben@gmail.com',
-    url='https://github.com/eliben/pycparser',
+    version='0.1',
+    author='Eli Bendersky, Jan-Christoph Klie',
+    maintainer='Jan-Christoph Klie ',
+    author_email='git@mrklie.com',
+    url='https://github.com/rentier/ast-gen',
     platforms='Cross Platform',
     classifiers = [
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',],
-    packages=['pycparser', 'pycparser.ply'],
-    package_data={'pycparser': ['*.cfg']},
+    packages=['ast-gen'],
+    package_data={},
 )
 
 
