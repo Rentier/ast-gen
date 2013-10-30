@@ -9,7 +9,7 @@ Installation
 
 Installing ast-gen is very simple. Once you download and unzip the package, you just have to execute the standard ::
 
-	python setup.py install. 
+	python setup.py install 
 
 The setup script will then place the ast-gen module into site-packages in your Python's installation library. To install it via **pip**, just use::
 
