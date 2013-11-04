@@ -1,6 +1,6 @@
 from astgen.ast_gen import ASTCodeGenerator
 
-import os, sys, importlib
+import os, sys
 
 TEST_AST_CFG = os.path.join('fixtures', 'test_ast.cfg')
 TEST_AST_MODULE = 'test_ast'
