@@ -1,6 +1,6 @@
 from astgen.ast_gen import ASTCodeGenerator
 
-import os, sys
+import os, sys, importlib
 
 TEST_AST_CFG = os.path.join('fixtures', 'test_ast.cfg')
 TEST_AST_MODULE = 'test_ast'
@@ -15,12 +15,14 @@ def setup():
     ast_gen = ASTCodeGenerator(TEST_AST_CFG)
     ast_gen.generate(open(TEST_AST_PY, 'w'))
 
+"""    
 def teardown():
-    """ Cleans up after the code generation: If existing,
+    Cleans up after the code generation: If existing,
     removes the generated python file and its binary.
-    """
+    
     try:        
         os.remove(TEST_AST_PY)
         os.remove(TEST_AST_PY + 'c')
     except OSError as e:
         pass
+"""

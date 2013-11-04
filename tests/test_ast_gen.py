@@ -20,10 +20,31 @@ test_ast.py
 file and do my testing here.
 """
 
+identifier = Identifier('foo')
+const = Constant('int', 40)
+assignment = Assignment('+', identifier, const)
+
+
 def test_creates_py_file():
     pass
 
 def test_node_with_only_attributes():
-    const = Constant('int', 42)
     eq_(const.clazz, 'int')
-    eq_(const.value, 42)
+    eq_(const.value, 40)
+
+def test_node_with_child_nodes():
+    
+    eq_(assignment.op, '+')
+    eq_(assignment.lvalue.name, 'foo')
+    eq_(assignment.rvalue.clazz, 'int')
+    eq_(assignment.rvalue.value, 40)
+
+def test_node_with_sequence_of_child_nodes():
+    lst = Array([identifier, const])
+    eq_(len(lst.items), 2)
+    eq_(lst.items[0].name, 'foo')
+    eq_(lst.items[1].clazz, 'int')
+    eq_(lst.items[1].value, 40)
+
+    
+    
