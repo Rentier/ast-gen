@@ -1,50 +1,47 @@
 from nose.tools import eq_, with_setup, nottest
 
-from test_ast import *
 
 """
-This test file does many hidden things, mostly in
-a setup function in the nearby __init__.py file.
+When some changes are made to the AST generating
+source, one has to rebuild the AST under test. This
+can be done with the command
 
-There, I create on the fly a AST class with ast_gen
-from a fixture config file, found in
+python generate.py tests/fixtures/test_ast.cfg tests/ast_under_test.py
 
-fixtures/test_ast.cfg
+called from where generate.py resides.
 
-This is created even before this file is run,
-therefore, I can import the node classes from the
-generated
+It is assumed that it is created even before this
+file is run, therefore, I can import the node classes
+from the generated
 
-test_ast.py
+ast_under_test.py
 
 file and do my testing here.
 """
+from tests.ast_under_test import *
 
 identifier = Identifier('foo')
 const = Constant('int', 40)
 assignment = Assignment('+', identifier, const)
-
-
-def test_creates_py_file():
-    pass
+lst = Array(identifier, const)
 
 def test_node_with_only_attributes():
-    eq_(const.clazz, 'int')
-    eq_(const.value, 40)
+    eq_(const.to_tuples(),
+        ('Constant', 'int', 40))
 
 def test_node_with_child_nodes():
-    
-    eq_(assignment.op, '+')
-    eq_(assignment.lvalue.name, 'foo')
-    eq_(assignment.rvalue.clazz, 'int')
-    eq_(assignment.rvalue.value, 40)
+    eq_(assignment.to_tuples(),
+        ('Assignment', '+',
+         ('Identifier', 'foo'),
+         ('Constant', 'int', 40)))
 
 def test_node_with_sequence_of_child_nodes():
-    lst = Array([identifier, const])
-    eq_(len(lst.items), 2)
-    eq_(lst.items[0].name, 'foo')
-    eq_(lst.items[1].clazz, 'int')
-    eq_(lst.items[1].value, 40)
+    eq_(lst.to_tuples(),
+        ('Array',
+         [
+             ('Identifier', 'foo'),
+             ('Constant', 'int', 40)             
+         ]))
 
     
     

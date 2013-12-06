@@ -17,7 +17,7 @@ from string import Template
 
 
 class ASTCodeGenerator(object):
-    def __init__(self, cfg_filename='_c_ast.cfg'):
+    def __init__(self, cfg_filename):
         """ Initialize the code generator from a configuration
             file.
         """
@@ -25,8 +25,14 @@ class ASTCodeGenerator(object):
         self.node_cfg = [NodeCfg(name, contents)
             for (name, contents) in self.parse_cfgfile(cfg_filename)]
 
-    def generate(self, file=None):
+    def generate(self, f=None):
         """ Generates the code into file, an open file buffer.
+        """
+        src = self.generate_source()
+        f.write(src)
+
+    def generate_source(self):
+        """ Generates the code into a string
         """
         src = Template(_PROLOGUE_COMMENT).substitute(
             cfg_filename=self.cfg_filename)
@@ -35,7 +41,7 @@ class ASTCodeGenerator(object):
         for node_cfg in self.node_cfg:
             src += node_cfg.generate_source() + '\n\n'
 
-        file.write(src)
+        return src            
 
     def parse_cfgfile(self, filename):
         """ Parse the configuration file and yield pairs of
@@ -119,8 +125,8 @@ class NodeCfg(object):
 
             for seq_child in self.seq_child:
                 src += (
-                    '        for i, child in enumerate(self.%(child)s or []):\n'
-                    '            nodelist.append(("%(child)s[%%d]" %% i, child))\n') % (
+                    '        for child in self.%(child)s or []:\n'
+                    '            nodelist.append(child)\n') % (
                         dict(child=seq_child))
 
             src += '        return tuple(nodelist)\n'
@@ -144,11 +150,10 @@ r'''#-----------------------------------------------------------------
 # run the generator again.
 # ** ** *** ** **
 #
-# pycparser: c_ast.py
-#
 # AST Node classes.
 #
 # Copyright (C) 2008-2013, Eli Bendersky
+#               2013,      Jan-Christoph Klie 
 # License: BSD
 #-----------------------------------------------------------------
 
@@ -166,12 +171,38 @@ class Node(object):
         """
         pass
 
-    def show(self, buf=sys.stdout, offset=0, attrnames=False, nodenames=False, showcoord=False, _my_node_name=None):
+    def __str__(self):
+        return self.show()
+
+    def __repr__(self):
+        return str(self.to_tuples())
+
+    def to_tuples(self):
+        result = [self.__class__.__name__]
+
+        if self.attr_names:
+            vlist = [getattr(self, n) for n in self.attr_names]
+            attrlst = [v for v in vlist]
+            result.extend(attrlst)
+
+        for (child_name, child) in self.children():
+            result.append( child.to_tuples() )
+        return tuple(result)
+
+    def show(self,
+             buf=None,
+             offset=0,
+             attrnames=False,
+             nodenames=False,
+             showcoord=False,
+             _my_node_name=None):
         """ Pretty print the Node and all its attributes and
             children (recursively) to a buffer.
 
             buf:
                 Open IO buffer into which the Node is printed.
+                If it is None or let empty, instead a string
+                is returned
 
             offset:
                 Initial offset (amount of leading spaces)
@@ -188,11 +219,12 @@ class Node(object):
                 Do you want the coordinates of each Node to be
                 displayed.
         """
+        s = ''
         lead = ' ' * offset
         if nodenames and _my_node_name is not None:
-            buf.write(lead + self.__class__.__name__+ ' <' + _my_node_name + '>: ')
+            s += lead + self.__class__.__name__+ ' <' + _my_node_name + '>: '
         else:
-            buf.write(lead + self.__class__.__name__+ ': ')
+            s += lead + self.__class__.__name__+ ': '
 
         if self.attr_names:
             if attrnames:
@@ -201,14 +233,13 @@ class Node(object):
             else:
                 vlist = [getattr(self, n) for n in self.attr_names]
                 attrstr = ', '.join('%s' % v for v in vlist)
-            buf.write(attrstr)
+            s += attrstr
 
-        if showcoord:
-            buf.write(' (at %s)' % self.coord)
-        buf.write('\n')
+        if showcoord: s += ' (at %s)' % self.coord
+        s += '\n'
 
         for (child_name, child) in self.children():
-            child.show(
+            s += child.show(
                 buf,
                 offset=offset + 2,
                 attrnames=attrnames,
@@ -216,6 +247,8 @@ class Node(object):
                 showcoord=showcoord,
                 _my_node_name=child_name)
 
+        if buf is None: return s
+        else: buf.write(s)
 
 class NodeVisitor(object):
     """ A base NodeVisitor class for visiting c_ast nodes.
@@ -267,9 +300,4 @@ class NodeVisitor(object):
 
 '''
 
-
-if __name__ == "__main__":
-    import sys
-    ast_gen = ASTCodeGenerator('_c_ast.cfg')
-    ast_gen.generate(open('c_ast.py', 'w'))
 

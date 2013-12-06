@@ -46,7 +46,20 @@ To generate the file containing the described nodes, just run::
 
 	from astgen.ast_gen import ASTCodeGenerator
 	ast_gen = ASTCodeGenerator(**PATH_TO_CONFIG.cfg**)
-	ast_gen.generate(open(**PATH_TO_WHERE_TO_SAVE**, 'w'))
+	gen.generate(open(**PATH_TO_WHERE_TO_SAVE**, 'w'))
+
+Or use the command line: ::
+
+        usage: generate.py [-h] I O
+
+        Generates the ast for a given config file.
+
+        positional arguments:
+            I           Path to config file.
+            O           Path to where the generated AST will be stored.
+
+        optional arguments:
+            -h, --help  show this help message and exit
 
 Build status
 ------------
