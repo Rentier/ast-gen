@@ -12,7 +12,7 @@ setup(
     it creates a file containing these node classes.
     """,
     license='BSD',
-    version='0.1',
+    version='0.22',
     author='Eli Bendersky, Jan-Christoph Klie',
     maintainer='Jan-Christoph Klie ',
     author_email='git@mrklie.com',
