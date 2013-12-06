@@ -23,7 +23,7 @@ from tests.ast_under_test import *
 identifier = Identifier('foo')
 const = Constant('int', 40)
 assignment = Assignment('+', identifier, const)
-lst = Array(identifier, const)
+lst = Array([identifier, const])
 
 def test_node_with_only_attributes():
     eq_(const.to_tuples(),
@@ -38,10 +38,8 @@ def test_node_with_child_nodes():
 def test_node_with_sequence_of_child_nodes():
     eq_(lst.to_tuples(),
         ('Array',
-         [
              ('Identifier', 'foo'),
-             ('Constant', 'int', 40)             
-         ]))
+             ('Constant', 'int', 40)))
 
     
     

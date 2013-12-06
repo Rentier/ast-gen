@@ -35,10 +35,8 @@ class Node(object):
     def to_tuples(self):
         result = [self.__class__.__name__]
 
-        if self.attr_names:
-            vlist = [getattr(self, n) for n in self.attr_names]
-            attrlst = [v for v in vlist]
-            result.extend(attrlst)
+        attr_list = [getattr(self, n) for n in self.attr_names]
+        result.extend(attr_list)
 
         for (child_name, child) in self.children():
             result.append( child.to_tuples() )
@@ -198,8 +196,8 @@ class Array(Node):
 
     def children(self):
         nodelist = []
-        for child in self.items or []:
-            nodelist.append(child)
+        for i, child in enumerate(self.items or []):
+            nodelist.append(("items[%d]" % i, child))
         return tuple(nodelist)
 
     attr_names = ()

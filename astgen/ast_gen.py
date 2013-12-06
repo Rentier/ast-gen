@@ -125,8 +125,8 @@ class NodeCfg(object):
 
             for seq_child in self.seq_child:
                 src += (
-                    '        for child in self.%(child)s or []:\n'
-                    '            nodelist.append(child)\n') % (
+                    '        for i, child in enumerate(self.%(child)s or []):\n'
+                    '            nodelist.append(("%(child)s[%%d]" %% i, child))\n') % (
                         dict(child=seq_child))
 
             src += '        return tuple(nodelist)\n'
@@ -180,10 +180,8 @@ class Node(object):
     def to_tuples(self):
         result = [self.__class__.__name__]
 
-        if self.attr_names:
-            vlist = [getattr(self, n) for n in self.attr_names]
-            attrlst = [v for v in vlist]
-            result.extend(attrlst)
+        attr_list = [getattr(self, n) for n in self.attr_names]
+        result.extend(attr_list)
 
         for (child_name, child) in self.children():
             result.append( child.to_tuples() )
