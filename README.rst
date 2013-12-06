@@ -65,5 +65,4 @@ Build status
 ------------
 
 .. image:: https://travis-ci.org/Rentier/ast-gen.png?branch=master   :target: https://travis-ci.org/Rentier/ast-gen
-
 .. _pycparser: https://github.com/eliben/pycparser
