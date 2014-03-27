@@ -169,7 +169,7 @@ class Node(object):
     def children(self):
         """ A sequence of all children that are Nodes
         """
-        pass
+        self.tags = []
 
     def __str__(self):
         return self.show()
