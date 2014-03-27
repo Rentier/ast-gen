@@ -105,6 +105,7 @@ class NodeCfg(object):
             arglist = '(self, coord=None)'
 
         src += "    def __init__%s:\n" % arglist
+        src += "        self.tags = []\n"
 
         for name in self.all_entries + ['coord']:
             src += "        self.%s = %s\n" % (name, name)
@@ -169,7 +170,7 @@ class Node(object):
     def children(self):
         """ A sequence of all children that are Nodes
         """
-        self.tags = []
+        pass
 
     def __str__(self):
         return self.show()
